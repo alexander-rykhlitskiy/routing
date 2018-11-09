@@ -16,7 +16,7 @@ module Entities
   BASE_CITY_ID = 0
   BASE_CITY = CITY.new(BASE_CITY_ID, 0, 0, [])
 
-  DAY_DESCRIPTION = Struct.new(:n, :w, :k, :cities) do
+  DayInfo = Struct.new(:n, :w, :k, :cities) do
     def index_cities_by_id
       @indexed_cities ||= [BASE_CITY, *cities].index_by(&:id)
     end
@@ -24,7 +24,21 @@ module Entities
 
   DELIVERY = Struct.new(:id, :weight, :city_id)
 
-  class Route < Struct.new(:full_distance, :cities, :deliveries)
+  class Route
+    def initialize(max_weight)
+      @max_weight = max_weight
+      @load = 0
+      @flights = []
+    end
+
+    def can_add?(weight)
+      @load + weight <= @max_weight
+    end
+
+    def full?
+      @load >= @max_weight
+    end
+
     def to_s
       [deliveries.count, *deliveries.map(&:id)].join(' ')
     end

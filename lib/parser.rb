@@ -11,7 +11,7 @@ class Parser
     arr = []
 
     until lines.empty?
-      d = DAY_DESCRIPTION.new(*shift_line(lines), [])
+      d = DayInfo.new(*shift_line(lines), [])
 
       d.cities = d.n.times.map { |i| CITY.new(i + 1, *shift_line(lines), []) }
 

@@ -1,10 +1,9 @@
 module Processors
   class Base
-    attr_reader :day_info, :route_calculator
+    attr_reader :day_info
 
-    def initialize(day_info, route_calculator: DistanceScoreCalculator, **)
+    def initialize(day_info)
       @day_info = day_info
-      @route_calculator = route_calculator.new(cities)
     end
 
     def call
@@ -12,27 +11,22 @@ module Processors
     end
 
     def build_routes
-      []
-    end
-
-    private
-
-    def cities
-      @cities ||= day_info.cities
-    end
-
-    def deliveries
-      @deliveries ||= cities.flat_map(&:deliveries)
+      RoutesBuilder.new(day_info.cities)
     end
   end
 
-  class Stub < Base
+  class RoutesBuilder < Struct.new(:cities)
+    def initialize(cities)
+      @cities = cities
+      @route = Route.new
+    end
+
     def call
-      []
+      until @route.full?
     end
   end
 
-  class DistanceScoreCalculator
+  class BestFlightCalculator
     def initialize(destinations)
       @destinations = destinations
     end
