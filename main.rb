@@ -1,7 +1,6 @@
-require_relative 'city'
-require_relative 'distance_calculator'
-
 require 'processors'
+require 'city'
+require 'distance_calculator'
 
 class Solution
   attr_reader :days_info, :reporter, :day_processor, :options
