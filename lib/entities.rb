@@ -33,9 +33,9 @@ module Entities
 
     def to_s
       [
-        routes.sum(&:full_distance),
-        routes.count,
-        routes.map(&:to_s)
+        @routes.sum(&:full_distance),
+        @routes.count,
+        @routes.map(&:to_s)
       ].join("\n")
     end
   end
