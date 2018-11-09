@@ -193,10 +193,13 @@ class Solution
         if distance < min_distance
           min_distance = distance
           best_method = index
+          fc_df = [flight_count, daily_flights]
         end
       end
 
       result += distance
+
+      flight_count, daily_flights = fc_df
 
       reporter.puts distance
       reporter.puts flight_count
