@@ -7,6 +7,10 @@ module Entities
     def ==(other)
       id == other.id
     end
+
+    def weight_of_deliveries
+      deliveries.sum(&:weight)
+    end
   end
 
   BASE_CITY_ID = 0
