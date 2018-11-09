@@ -36,15 +36,16 @@ module Processors
       @destinations = destinations
     end
 
-    def call
-      @destinations.each_with_object({}) do |destination, hash|
+    def call(source)
+      @destinations.map do |destination|
+        hash = {}
         distance = source.calculate_destination_to(destination)
         weight = destination.weight_of_deliveries
-
+        hash[:destination] = destination
         hash[:distance] = distance
         hash[:weight] = weight
         hash[:score] = weight.to_f / distance
-      end
+      end.max_by {|h| h[:score]}
     end
   end
 end
