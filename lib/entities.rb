@@ -24,11 +24,7 @@ module Entities
 
   DELIVERY = Struct.new(:id, :weight, :city_id)
 
-  class Route
-    def full_distance
-
-    end
-
+  class Route < Struct.new(:full_distance, :cities, :deliveries)
     def to_s
       [deliveries.count, *deliveries.map(&:id)].join(' ')
     end
