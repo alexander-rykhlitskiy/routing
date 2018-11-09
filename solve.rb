@@ -70,7 +70,7 @@ class Solution
   end
 
   def quick_sort(cities)
-    send('m' + $method.to_s)
+    send('m' + $method.to_s, cities)
   end
 
   def m1(cities)
@@ -127,27 +127,54 @@ class Solution
 
   def m4(cities)
     result = cities.group_by do |city|
-      if city.x >= 0 && city.y >= 0
+      if city.x >= 0 && city.y <= 0
         0
-      elsif city.x >= 0 && city.y < 0
-        1
       elsif city.x < 0 && city.y < 0
+        1
+      elsif city.x > 0 && city.y > 0
         2
       else
         3
       end
-    end.values.sort_by { |city| BASE_LOCATION.destination_to(city) * multiplier }.flatten
+    end.values
+
+    result.each_with_index.map do |cities, i|
+      multiplier = i % 2 == 0 ? -1 : 1
+
+      cities.sort_by { |city| BASE_LOCATION.destination_to(city) * multiplier }
+    end.flatten
   end
 
+  def m5(cities)
+    result = cities.group_by do |city|
+      if city.x <= 0 && city.y <= 0
+        0
+      elsif city.x <= 0 && city.y > 0
+        1
+      elsif city.x > 0 && city.y > 0
+        2
+      else
+        3
+      end
+    end.values
+
+    result.each_with_index.map do |cities, i|
+      multiplier = i % 2 == 0 ? -1 : 1
+
+      cities.sort_by { |city| BASE_LOCATION.destination_to(city) * multiplier }
+    end.flatten
+  end
 
   def call
     result = 0
 
     days_info.each_with_index do |day, i|
-      min_distance = 999999
+      min_distance = 99999999999999999
       best_method = 999
+      distance = nil
+      best_result = []
 
-      (1..4).each do |index|
+      (1..5).each do |index|
         $method = index
         sorted_by_destination = quick_sort(day.cities)
 
@@ -193,15 +220,15 @@ class Solution
         if distance < min_distance
           min_distance = distance
           best_method = index
-          fc_df = [flight_count, daily_flights]
+          best_result = [flight_count, daily_flights]
         end
       end
 
-      result += distance
+      result += min_distance
 
-      flight_count, daily_flights = fc_df
+      flight_count, daily_flights = best_result
 
-      reporter.puts distance
+      reporter.puts min_distance
       reporter.puts flight_count
       reporter.puts daily_flights
     end
