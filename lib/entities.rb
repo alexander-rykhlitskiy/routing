@@ -35,7 +35,7 @@ module Entities
       [
         @routes.sum(&:full_distance),
         @routes.count,
-        @routes.map(&:to_s)
+        @routes.map(&:to_s).join("\n")
       ].join("\n")
     end
   end
