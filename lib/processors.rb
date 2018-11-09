@@ -1,9 +1,10 @@
 module Processors
   class Base
-    attr_reader :day_info
+    attr_reader :day_info, :route_calculator
 
-    def initialize(day_info, **)
+    def initialize(day_info, route_calculator: DistanceScoreCalculator, **)
       @day_info = day_info
+      @route_calculator = route_calculator.new(cities)
     end
 
     def call
