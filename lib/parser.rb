@@ -3,8 +3,6 @@ require_relative 'entities'
 class Parser
   attr_reader :lines
 
-  DELIVERY = Struct.new(:id, :weight, :city_id)
-
   def initialize(file_name)
     _, *@lines = File.readlines(file_name)
   end
