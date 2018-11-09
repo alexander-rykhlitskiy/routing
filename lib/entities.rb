@@ -26,7 +26,7 @@ module Entities
 
   class Route
     def to_s
-      [deliveries.count, **deliveries.map(&:id)].join("\n")
+      [deliveries.count, *deliveries.map(&:id)].join(' ')
     end
   end
 

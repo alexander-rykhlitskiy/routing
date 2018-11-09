@@ -6,6 +6,14 @@ module Processors
       @day_info = day_info
     end
 
+    def call
+      DayFlightReport.new(build_routes).to_s
+    end
+
+    def build_routes
+      []
+    end
+
     private
 
     def cities
